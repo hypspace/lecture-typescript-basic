@@ -12,3 +12,31 @@ const updateUser = (userId: number, userUpdates: Partial<User>) => {
   // userUpdates는 id, name, email 중 일부만 포함되어도 가능
 }
 updateUser(1, { name: 'wang' })
+
+// - Pick: 객체의 특정 프로퍼티만 선택하여 새로운 타입 (원하는 속성만 뽑아냄)
+interface Product {
+  id: string
+  name: string
+  type: string
+  price: number
+  stock: number
+}
+// :: displayProductDetail를 위해서 인터페이스에 중복 코드 발생! => TS 유틸리티 API성 타입, Pick 활용하여 해결함
+// interface ProductDetail {
+//   id: string
+//   name: string
+// }
+
+async function fetchProducts(): Promise<Product[]> {
+  const response = await fetch('url')
+  if (!response.ok) {
+    throw Error('Response was not ok')
+  }
+  const products = await response.json()
+  return products
+}
+
+type ShoppingItem = Pick<Product, 'id' | 'name'>
+function displayProductDetail(shoppingItem: ShoppingItem) {
+  // ...
+}
