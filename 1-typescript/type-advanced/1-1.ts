@@ -1,5 +1,6 @@
 // TS 고급 타입
 // : TS 코드를 줄이는 API성 타입. 유틸리티 타입, 고급 타입, 제네릭 타입으로 불리기도 함
+// : 유틸리티 타입은 아래 Omit까지 이외에도 더 많음. 필요 시 다음 사이트 참고할 것 (https://www.typescriptlang.org/docs/handbook/utility-types.html)
 
 // - Partial: 객체의 모든 프로퍼티를 선택적으로 만드는 타입 (모든 속성을 가져오고 선택함)
 interface User {
@@ -40,3 +41,15 @@ type ShoppingItem = Pick<Product, 'id' | 'name'>
 function displayProductDetail(shoppingItem: ShoppingItem) {
   // ...
 }
+
+// - Omit: 특정 프로퍼티를 제외한 새로운 타입 (선택한 프로퍼티를 제외하고 나머지)
+interface Book {
+  id: number
+  type: string
+  author: string
+  description: string
+  image: string
+  genre: string
+}
+
+type BookWithoutGenre = Omit<Book, 'genre'>
