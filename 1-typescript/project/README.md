@@ -1,7 +1,5 @@
 ## 코로나 세계 현황
 
-최종 프로젝트 폴더
-
 ## 참고 자료
 
 - [존스 홉킨스 코로나 현황](https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6)
