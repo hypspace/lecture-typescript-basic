@@ -96,7 +96,7 @@ async function handleListClick(event: any) {
   // );
   const { data: confirmedResponse } = await fetchCountryInfo(
     selectedId,
-    'confirmed'
+    CovidStatus.Confirmed
   )
   endLoadingAnimation()
   // NOTE: 코로나 종식으로 오픈 API 지원이 끝나서 death, recover 데이터는 지원되지 않습니다.
