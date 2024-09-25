@@ -34,7 +34,7 @@ function createSpinnerElement(id: string) {
 
 // state
 let isDeathLoading = false
-let isRecoveredLoading = false
+const isRecoveredLoading = false
 
 function fetchCovidSummary() {
   const url = 'https://ts-covid-api.vercel.app/api/summary'
@@ -180,7 +180,7 @@ async function setupData() {
 }
 
 function renderChart(data: any, labels: any) {
-  var ctx = $('#lineChart').getContext('2d')
+  const ctx = $('#lineChart').getContext('2d')
   new Chart(ctx, {
     type: 'line',
     data: {
