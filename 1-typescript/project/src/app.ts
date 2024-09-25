@@ -36,28 +36,20 @@ function createSpinnerElement(id: string) {
 let isDeathLoading = false
 let isRecoveredLoading = false
 
-/**
- * @typedef {object} CovidSummary
- * @property {object[]} Country
- */
-
-// api
-/**
- * @returns {Promise<CovidSummary>}
- */
 function fetchCovidSummary() {
   const url = 'https://ts-covid-api.vercel.app/api/summary'
   return axios.get(url)
 }
 
-/**
- *
- * @param {'spain' | 'switzerland'} countryCode 스페인과 스위스만 지원됩니다.
- * @returns
- */
-function fetchCountryInfo(countryCode: any, status: any) {
-  // params: confirmed, recovered, deaths
-  const url = `https://ts-covid-api.vercel.app/api/country/${countryCode}`
+enum CovidStatus {
+  Confirmed = 'confirmed',
+  Recovered = 'recovered',
+  Deaths = 'deaths',
+}
+
+function fetchCountryInfo(countryCode: string, status: CovidStatus) {
+  // status params: confirmed, recovered, deaths
+  const url = `https://ts-covid-api.vercel.app/api/country/${countryCode}/status/${status}`
   return axios.get(url)
 }
 
