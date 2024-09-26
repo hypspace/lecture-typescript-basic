@@ -1,3 +1,4 @@
+import { CovidSummaryResponse } from './covid/index'
 import axios, { AxiosResponse } from 'axios'
 import { Chart } from 'chart.js'
 
@@ -38,13 +39,6 @@ function createSpinnerElement(id: string) {
 // state
 let isDeathLoading = false
 const isRecoveredLoading = false
-
-interface CovidSummaryResponse {
-  Countries: any[]
-  Date: string
-  Global: object
-  Message: string
-}
 
 function fetchCovidSummary(): Promise<AxiosResponse<CovidSummaryResponse>> {
   const url = 'https://ts-covid-api.vercel.app/api/summary'
