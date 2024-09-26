@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { Chart } from 'chart.js'
 
 // utils
@@ -39,7 +39,14 @@ function createSpinnerElement(id: string) {
 let isDeathLoading = false
 const isRecoveredLoading = false
 
-function fetchCovidSummary() {
+interface CovidSummaryResponse {
+  Countries: any[]
+  Date: string
+  Global: object
+  Message: string
+}
+
+function fetchCovidSummary(): Promise<AxiosResponse<CovidSummaryResponse>> {
   const url = 'https://ts-covid-api.vercel.app/api/summary'
   return axios.get(url)
 }
