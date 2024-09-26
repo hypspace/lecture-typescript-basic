@@ -1,4 +1,8 @@
-import { CountrySummaryInfo, CovidSummaryResponse } from './covid/index'
+import {
+  Country,
+  CountrySummaryInfo,
+  CovidSummaryResponse,
+} from './covid/index'
 import axios, { AxiosResponse } from 'axios'
 import { Chart } from 'chart.js'
 
@@ -220,11 +224,11 @@ function setTotalConfirmedNumber(data: any) {
   )
 }
 
-function setTotalDeathsByWorld(data: any) {
+function setTotalDeathsByWorld(data: CovidSummaryResponse) {
   deathsTotal.innerText = data.Countries.reduce(
-    (total: any, current: any) => (total += current.TotalDeaths),
+    (total: number, current: Country) => (total += current.TotalDeaths),
     0
-  )
+  ).toString()
 }
 
 function setTotalRecoveredByWorld(data: any) {
