@@ -1,4 +1,4 @@
-import { CovidSummaryResponse } from './covid/index'
+import { CountrySummaryInfo, CovidSummaryResponse } from './covid/index'
 import axios, { AxiosResponse } from 'axios'
 import { Chart } from 'chart.js'
 
@@ -51,7 +51,10 @@ enum CovidStatus {
   Deaths = 'deaths',
 }
 
-function fetchCountryInfo(countryCode: string, status: CovidStatus) {
+function fetchCountryInfo(
+  countryCode: string,
+  status: CovidStatus
+): Promise<AxiosResponse<CountrySummaryInfo>> {
   // status params: confirmed, recovered, deaths
   const url = `https://ts-covid-api.vercel.app/api/country/${countryCode}/status/${status}`
   return axios.get(url)
