@@ -8,21 +8,22 @@ import axios, { AxiosResponse } from 'axios'
 import { Chart } from 'chart.js'
 
 // utils
-function $(selector: string) {
-  return document.querySelector(selector)
+function $<T extends HTMLElement>(selector: string) {
+  const element = document.querySelector(selector)
+  return element as T
 }
 function getUnixTimestamp(date: Date | string) {
   return new Date(date).getTime()
 }
 
 // DOM
-const confirmedTotal = $('.confirmed-total') as HTMLSpanElement
-const deathsTotal = $('.deaths') as HTMLParagraphElement
-const recoveredTotal = $('.recovered') as HTMLParagraphElement
-const lastUpdatedTime = $('.last-updated-time') as HTMLParagraphElement
-const rankList = $('.rank-list')
-const deathsList = $('.deaths-list')
-const recoveredList = $('.recovered-list')
+const confirmedTotal = $<HTMLSpanElement>('.confirmed-total')
+const deathsTotal = $<HTMLParagraphElement>('.deaths')
+const recoveredTotal = $<HTMLParagraphElement>('.recovered')
+const lastUpdatedTime = $<HTMLParagraphElement>('.last-updated-time')
+const rankList = $<HTMLOListElement>('.rank-list')
+const deathsList = $<HTMLOListElement>('.deaths-list')
+const recoveredList = $<HTMLOListElement>('.recovered-list')
 const deathSpinner = createSpinnerElement('deaths-spinner')
 const recoveredSpinner = createSpinnerElement('recovered-spinner')
 
@@ -76,13 +77,15 @@ function initEvents() {
   rankList.addEventListener('click', handleListClick)
 }
 
-async function handleListClick(event: any) {
+async function handleListClick(event: Event) {
   let selectedId
   if (
     event.target instanceof HTMLParagraphElement ||
     event.target instanceof HTMLSpanElement
   ) {
-    selectedId = event.target.parentElement.id
+    selectedId = event.target.parentElement
+      ? event.target.parentElement.id
+      : undefined
   }
   if (event.target instanceof HTMLLIElement) {
     selectedId = event.target.id
@@ -140,6 +143,9 @@ function setDeathsList(data: CountrySummaryResponse) {
 }
 
 function clearDeathList() {
+  if (!deathsList) {
+    return
+  }
   deathsList.innerHTML = null
 }
 
@@ -162,12 +168,28 @@ function setRecoveredList(data: CountrySummaryResponse) {
     p.textContent = new Date(value.Date).toLocaleDateString().slice(0, -1)
     li.appendChild(span)
     li.appendChild(p)
-    recoveredList.appendChild(li)
+    recoveredList?.appendChild(li)
+    if (recoveredList === null || recoveredList === undefined) {
+      return
+    } else {
+      recoveredList.appendChild(li)
+    }
+
+    /**
+     * 참고 recoveredList.appendChild(li)에서 생성되는 TS에러는 다음과 같이 해결할 수 있습니다.
+     *  타입 단언으로 해결하면 사이드 이펙트가 발생하기에 아래와 같은 방법으로 해결합니다.
+     *  이는 recoveredList!.appendChild(li)와 같은 코드 작성을 의미합니다.
+     
+     * - if문: if (recoveredList === null || recoveredList === undefined) { return } else { recoveredList.appendChild(li) }
+     * - 옵셔널 체이닝(?.) 오퍼레이터: recoveredList?.appendChild(li)
+     * - 논리 AND(&&): recoveredList && recoveredList.appendChild(li)
+     * - 3항(ternary) 연산자: recoveredList ? recoveredList.appendChild(li) : undefined
+     */
   })
 }
 
 function clearRecoveredList() {
-  recoveredList.innerHTML = null
+  recoveredList.innerHTML = ''
 }
 
 function setTotalRecoveredByCountry(data: CountrySummaryResponse) {
