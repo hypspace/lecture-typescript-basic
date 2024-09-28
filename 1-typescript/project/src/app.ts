@@ -20,9 +20,9 @@ const confirmedTotal = $('.confirmed-total') as HTMLSpanElement
 const deathsTotal = $('.deaths') as HTMLParagraphElement
 const recoveredTotal = $('.recovered') as HTMLParagraphElement
 const lastUpdatedTime = $('.last-updated-time') as HTMLParagraphElement
-const rankList = $('.rank-list')
-const deathsList = $('.deaths-list')
-const recoveredList = $('.recovered-list')
+const rankList = $('.rank-list') as HTMLOListElement
+const deathsList = $('.deaths-list') as HTMLOListElement
+const recoveredList = $('.recovered-list') as HTMLOListElement
 const deathSpinner = createSpinnerElement('deaths-spinner')
 const recoveredSpinner = createSpinnerElement('recovered-spinner')
 
@@ -167,12 +167,28 @@ function setRecoveredList(data: CountrySummaryResponse) {
     p.textContent = new Date(value.Date).toLocaleDateString().slice(0, -1)
     li.appendChild(span)
     li.appendChild(p)
-    recoveredList.appendChild(li)
+    recoveredList?.appendChild(li)
+    if (recoveredList === null || recoveredList === undefined) {
+      return
+    } else {
+      recoveredList.appendChild(li)
+    }
+
+    /**
+     * 참고 recoveredList.appendChild(li)에서 생성되는 TS에러는 다음과 같이 해결할 수 있습니다.
+     *  타입 단언으로 해결하면 사이드 이펙트가 발생하기에 아래와 같은 방법으로 해결합니다.
+     *  이는 recoveredList!.appendChild(li)와 같은 코드 작성을 의미합니다.
+     
+     * - if문: if (recoveredList === null || recoveredList === undefined) { return } else { recoveredList.appendChild(li) }
+     * - 옵셔널 체이닝(?.) 오퍼레이터: recoveredList?.appendChild(li)
+     * - 논리 AND(&&): recoveredList && recoveredList.appendChild(li)
+     * - 3항(ternary) 연산자: recoveredList ? recoveredList.appendChild(li) : undefined
+     */
   })
 }
 
 function clearRecoveredList() {
-  recoveredList.innerHTML = null
+  recoveredList.innerHTML = ''
 }
 
 function setTotalRecoveredByCountry(data: CountrySummaryResponse) {
