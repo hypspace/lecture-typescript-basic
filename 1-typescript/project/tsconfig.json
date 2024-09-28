@@ -2,6 +2,8 @@
   "compilerOptions": {
     "checkJs": true,
     "target": "ES5",
+    "module": "ES2015", // 혹은ES6 혹은 ESNext
+    "moduleResolution": "node",
     "noImplicitAny": true,
     "outDir": "./build",
     "lib": ["ES6", "DOM", "DOM.Iterable"]
