@@ -6,7 +6,8 @@
     "moduleResolution": "node",
     "noImplicitAny": true,
     "outDir": "./build",
-    "lib": ["ES6", "DOM", "DOM.Iterable"]
+    "lib": ["ES6", "DOM", "DOM.Iterable"],
+    "strict": true
   },
   "include": ["./src/**/*"]
 }
