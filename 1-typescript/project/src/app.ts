@@ -142,6 +142,9 @@ function setDeathsList(data: CountrySummaryResponse) {
 }
 
 function clearDeathList() {
+  if (!deathsList) {
+    return
+  }
   deathsList.innerHTML = null
 }
 
