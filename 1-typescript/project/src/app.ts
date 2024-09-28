@@ -76,7 +76,7 @@ function initEvents() {
   rankList.addEventListener('click', handleListClick)
 }
 
-async function handleListClick(event: any) {
+async function handleListClick(event: Event) {
   let selectedId
   if (
     event.target instanceof HTMLParagraphElement ||
